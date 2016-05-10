@@ -1,0 +1,28 @@
+{
+  "name": "abakus",
+  "version": "0.0.1",
+  "description": "This is a small program to manage different business accounts",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mikemontilla/abakus.git"
+  },
+  "keywords": [
+    "accounting",
+    "accounts",
+    "finance"
+  ],
+  "author": "Miguel Ramos Montilla",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mikemontilla/abakus/issues"
+  },
+  "homepage": "https://github.com/mikemontilla/abakus",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4"
+  }
+}
