@@ -13,6 +13,17 @@ abakus.use("/", express.static(path.join(__dirname, "public")));
 abakus.use(bodyParser.json());
 abakus.use(bodyParser.urlencoded({extended:true}));
 
+var removeMovement = function(movements, removeId){
+	if(!movements.length)
+		return;
+	removeId--;
+	movements.splice(removeId, 1);
+	while(removeId < movements.length){
+		movements[removeId].id--;
+		removeId++;
+	}
+};
+
 abakus.get("/api/movements", function(req, res){
 	fs.readFile(MOVEMENTS_FILE, function(error, data){
 		if(error){
@@ -46,6 +57,29 @@ abakus.post("/api/movements", function(req, res){
 		};
 
 		movements.push(newMovement);
+
+		fs.writeFile(MOVEMENTS_FILE, JSON.stringify(movements, null, 4), function(error){
+			if(error){
+				console.error(error);
+				process.exit(1);
+			}
+			res.json(movements);
+		});
+	});
+});
+
+abakus.post("/api/movements/remove", function(req, res){
+
+	fs.readFile(MOVEMENTS_FILE, function(error, data){
+
+		if(error){
+			console.error(error);
+			process.exit(1);
+		}
+
+		var movements = JSON.parse(data);
+		var id = parseInt(req.body.id);
+		removeMovement(movements, id);
 
 		fs.writeFile(MOVEMENTS_FILE, JSON.stringify(movements, null, 4), function(error){
 			if(error){

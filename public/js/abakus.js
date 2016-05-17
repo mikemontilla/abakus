@@ -35,6 +35,7 @@ var LoginForm = React.createClass({
 var AccountsManager = React.createClass({
 
 	url: "/api/movements/",
+	removeUrl: "/api/movements/remove",
 
 	getInitialState: function(){
 		return {
@@ -63,7 +64,9 @@ var AccountsManager = React.createClass({
 		var movements = this.state.movements;
 		movement.id = movements.length + 1;
 		var newMovements = movements.concat([movement]);
-		this.setState({movements: newMovements});
+		this.setState({
+			movements: newMovements}
+		);
 
 		$.ajax({
 			url: this.url,
@@ -76,6 +79,27 @@ var AccountsManager = React.createClass({
 			error: function(xhr, status, error){
 				this.setState({movements: movements});
 				console.error(this.url, status, error.toString());
+			}.bind(this)
+		});
+	},
+
+	handleMovementDestroy: function(movementId){
+		var movements = this.state.movements;
+		var newMovements = this.state.movements.slice();
+		newMovements.splice(movementId - 1, 1);
+		this.setState({movements: newMovements});
+
+		$.ajax({
+			url: this.removeUrl,
+			dataType: "json",
+			type: "POST",
+			data: {id:movementId},
+			success: function(data){
+				this.setState({movements:data});
+			}.bind(this),
+			error: function(xhr, status, error){
+				this.setState({movements:movements});
+				console.error(this.removeUrl, status, error.toString());
 			}.bind(this)
 		});
 	},
@@ -107,7 +131,7 @@ var AccountsManager = React.createClass({
 			<div className="accountManager">
 				<h1>Morion</h1>
 				{!movementsFlag && <h3 id="managerMessage">{message}</h3>}
-				{movementsFlag && <MovementsList movements={this.state.movements} />}
+				{movementsFlag && <MovementsList onMovementDestroy={this.handleMovementDestroy} movements={this.state.movements} />}
 				{movementsFlag && <BalanceDisplay incomes={balance.incomes} outcomes={balance.outcomes} />}
 				<NewMovementForm onMovementSubmit={this.handleMovementSubmit} />
 			</div>
@@ -116,19 +140,22 @@ var AccountsManager = React.createClass({
 });
 
 var MovementsList = React.createClass({
+
+	handleDestroy: function(movementId) {
+		this.props.onMovementDestroy(movementId);
+	},
+
 	render: function(){
 		var movements = this.props.movements;
 		var movementsNodes = movements.map(function(movement){
 			return (
 				<Movement
+					movement={movement}
 					key={movement.id}
-					date={movement.date}
-					description={movement.description}
-					type={movement.type}
-					amount={movement.amount}
-					comment={movement.comment}/>
+					onDestroy={this.handleDestroy}/>
 			);
-		});
+		}.bind(this));
+
 		return (
 			<table className="movementsList">
 				<tbody>
@@ -147,15 +174,21 @@ var MovementsList = React.createClass({
 });
 
 var Movement = React.createClass({
+
+	handleDestroyClick: function(){
+		this.props.onDestroy(this.props.movement.id);
+	},
+
 	render: function(){
-		var movementClass = classNames("movement", this.props.type);
+		var movementClass = classNames("movement", this.props.movement.type);
 		return (
 			<tr className={movementClass}>
-				<td>{this.props.date}</td>
-				<td>{this.props.description}</td>
-				<td>{this.props.type}</td>
-				<td><span>{this.props.amount}</span></td>
-				<td>{this.props.comment}</td>
+				<td>{this.props.movement.date}</td>
+				<td>{this.props.movement.description}</td>
+				<td>{this.props.movement.type}</td>
+				<td><span>{this.props.movement.amount}</span></td>
+				<td>{this.props.movement.comment}</td>
+				<div className="destroy" onClick={this.handleDestroyClick}></div>
 			</tr>
 		);
 	}
