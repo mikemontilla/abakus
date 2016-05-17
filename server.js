@@ -7,8 +7,8 @@ var abakus = express();
 var USERS_FILE = path.join(__dirname, "users.json");
 var MOVEMENTS_FILE = path.join(__dirname, "movements.json");
 
-abakus.set("port", (process.env.port || 3000));
-
+abakus.set("port", (process.env.OPENSHIFT_NODEJS_PORT || 8080));
+abakus.set("ip", (process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1"))
 abakus.use("/", express.static(path.join(__dirname, "public")));
 abakus.use(bodyParser.json());
 abakus.use(bodyParser.urlencoded({extended:true}));
@@ -57,6 +57,6 @@ abakus.post("/api/movements", function(req, res){
 	});
 });
 
-abakus.listen(abakus.get("port"), function(){
-	console.log("Server started: http://localhost" + abakus.get("port") + "/");
+abakus.listen(abakus.get("port"), abakus.get("ip"), function(){
+	console.log("Server started: " + abakus.get("ip") + ":" + abakus.get("port") + "/");
 });
