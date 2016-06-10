@@ -1,29 +1,42 @@
 {
-    "name": "abakus",
-    "version": "0.0.1",
-    "description": "This is a small program to manage different business accounts",
-    "main": "server.js",
-    "scripts": {
-        "start": "node server.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/mikemontilla/abakus.git"
-    },
-    "keywords": [
-        "accounting",
-        "accounts",
-        "finance"
-    ],
-    "author": "Miguel Ramos Montilla",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/mikemontilla/abakus/issues"
-    },
-    "homepage": "https://github.com/mikemontilla/abakus",
-    "dependencies": {
-        "body-parser": "^1.15.1",
-        "express": "^4.13.4"
-    }
+  "name": "abakus",
+  "version": "0.0.1",
+  "description": "This is a small program to manage different business accounts",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mikemontilla/abakus.git"
+  },
+  "keywords": [
+    "accounting",
+    "accounts",
+    "finance"
+  ],
+  "author": "Miguel Ramos Montilla",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mikemontilla/abakus/issues"
+  },
+  "homepage": "https://github.com/mikemontilla/abakus",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "classnames": "^2.2.5",
+    "express": "^4.13.4",
+    "jquery": "^3.0.0",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.5.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1",
+    "gulp": "^3.9.1"
+  }
 }
