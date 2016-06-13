@@ -1,7 +1,13 @@
 import React from 'react'
 import classNames from 'classnames'
+import {PropTypes} from 'react'
 
 const Movement = React.createClass({
+
+	propTypes: {
+		onDestroy: PropTypes.func.isRequired,
+		movement: PropTypes.object.isRequired
+	},
 
 	handleDestroyClick: function(){
 		this.props.onDestroy(this.props.movement.id);

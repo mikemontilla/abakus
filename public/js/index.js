@@ -1,8 +1,15 @@
 import React from 'react'
 import {render} from 'react-dom'
-import AccountsManager from './components/AccountsManager'
+import {Provider} from 'react-redux'
+import {createStore} from 'redux'
+import appReducer from './reducers/appReducer'
+import AccountsManager from './containers/AccountsManager'
+
+const store = createStore(appReducer);
 
 render(
-	<AccountsManager />,
+	<Provider store={store}>
+		<AccountsManager />
+	</Provider>,
 	document.getElementById('root')
 );

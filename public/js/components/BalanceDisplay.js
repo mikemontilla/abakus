@@ -1,6 +1,12 @@
 import React from 'react'
+import {PropTypes} from 'react'
 
 const BalanceDisplay = React.createClass({
+
+	propTypes: {
+		incomes: PropTypes.number.isRequired,
+		outcomes: PropTypes.number.isRequired
+	},
 
 	render: function(){
 		const balance =  this.props.incomes - this.props.outcomes;

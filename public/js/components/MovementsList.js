@@ -1,7 +1,13 @@
 import React from 'react'
 import Movement from './Movement'
+import {PropTypes} from 'react'
 
 const MovementsList = React.createClass({
+
+	propTypes: {
+		onMovementDestroy: PropTypes.func.isRequired,
+		movements: PropTypes.arrayOf(PropTypes.object).isRequired
+	},
 
 	handleDestroy: function(movementId) {
 		this.props.onMovementDestroy(movementId);
