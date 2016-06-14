@@ -1,26 +1,24 @@
 import React from 'react'
 import {PropTypes} from 'react'
-import MovementsList from './MovementsList'
+import MovementsList from '../containers/MovementsList'
 import BalanceDisplay from './BalanceDisplay'
-import NewMovementForm from './NewMovementForm'
+import NewMovementForm from '../containers/NewMovementForm'
 
 
 const AccountsManager = React.createClass({
 
 	PropTypes: {
-		handleMovementSubmit: PropTypes.func.isRequired,
-		handleMovementDestroy: PropTypes.func.isRequired,
 		movements: PropTypes.arrayOf(PropTypes.shape({
 			id: PropTypes.number.isRequired,
 			date: PropTypes.instanceOf(Date).isRequired,
 			description: PropTypes.string.isRequired,
-			value: PropTypes.number.isRequired,
+			amount: PropTypes.number.isRequired,
 			type: PropTypes.oneOf(['income','outcome']).isRequired,
 			comment: PropTypes.string.isRequired
 		})).isRequired
 	},
 
-	getBalance: function(){
+	computeBalance: function(){
 		const balance = {};
 		balance.incomes = 0;
 		balance.outcomes = 0;
@@ -34,7 +32,7 @@ const AccountsManager = React.createClass({
 	},
 
 	render: function(){
-		const balance = this.getBalance();
+		const balance = this.computeBalance();
 		const movementsFlag = !!this.props.movements.length;
 		let message = "";
 		if(!movementsFlag)
@@ -43,9 +41,9 @@ const AccountsManager = React.createClass({
 			<div className="accountManager">
 				<h1>Morion</h1>
 				{!movementsFlag && <h3 id="managerMessage">{message}</h3>}
-				{movementsFlag && <MovementsList onMovementDestroy={this.props.handleMovementDestroy} movements={this.props.movements} />}
+				{movementsFlag && <MovementsList movements={this.props.movements} />}
 				{movementsFlag && <BalanceDisplay incomes={balance.incomes} outcomes={balance.outcomes} />}
-				<NewMovementForm onMovementSubmit={this.props.handleMovementSubmit} />
+				<NewMovementForm  />
 			</div>
 		);
 	}

@@ -4,13 +4,9 @@ import {PropTypes} from 'react'
 
 const MovementsList = React.createClass({
 
-	propTypes: {
-		onMovementDestroy: PropTypes.func.isRequired,
-		movements: PropTypes.arrayOf(PropTypes.object).isRequired
-	},
-
-	handleDestroy: function(movementId) {
-		this.props.onMovementDestroy(movementId);
+	PropTypes: {
+		movements: PropTypes.arrayOf(PropTypes.object).isRequired,
+		onMovementDestroy: PropTypes.func.isRequired
 	},
 
 	render: function(){
@@ -20,7 +16,7 @@ const MovementsList = React.createClass({
 				<Movement
 					movement={movement}
 					key={movement.id}
-					onDestroy={this.handleDestroy}/>
+					onDestroyClick={this.props.onMovementDestroy}/>
 			);
 		}.bind(this));
 

@@ -5,12 +5,12 @@ import {PropTypes} from 'react'
 const Movement = React.createClass({
 
 	propTypes: {
-		onDestroy: PropTypes.func.isRequired,
+		onDestroyClick: PropTypes.func.isRequired,
 		movement: PropTypes.object.isRequired
 	},
 
 	handleDestroyClick: function(){
-		this.props.onDestroy(this.props.movement.id);
+		this.props.onDestroyClick(this.props.movement.id);
 	},
 
 	render: function(){

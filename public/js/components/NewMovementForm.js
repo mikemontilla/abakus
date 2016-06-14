@@ -3,7 +3,7 @@ import {PropTypes} from 'react'
 
 const NewMovementForm = React.createClass({
 
-	propTypes: {onMovementSubmit:PropTypes.func.isRequired},
+	propTypes: {onMovementSubmit: PropTypes.func.isRequired},
 
 	getInitialState: function(){
 		return {
