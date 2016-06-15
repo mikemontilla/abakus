@@ -1,11 +1,11 @@
 import {connect} from 'react-redux'
 import NewMovementFormComponent from '../components/NewMovementForm'
-import {addMovement} from '../actions'
+import {saveMovement} from '../actions'
 
 const mapDispatchToProps = function(dispatch){
     return {
         onMovementSubmit: function(movement){
-            dispatch(addMovement(movement));
+            dispatch(saveMovement(movement));
         }
     };
 };

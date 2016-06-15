@@ -48,7 +48,7 @@ abakus.post("/api/movements", function(req, res){
 		var movements = JSON.parse(data);
 
 		var newMovement = {
-			id: parseInt(req.body.id),
+			id: movements.length + 1,
 			date: req.body.date,
 			description: req.body.description,
 			type: req.body.type,

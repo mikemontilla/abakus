@@ -1,16 +1,17 @@
+import {ADD_MOVEMENT, REMOVE_MOVEMENT, RECEIVE_MOVEMENTS} from '../actions'
+
 //Handles the addition and deletion of movements
 const movementsReducer = function(state = [], action) {
-    let modifiedMovements;
     switch(action.type){
-        case "ADD_MOVEMENT":
-            modifiedMovements = state.slice();
-            modifiedMovements.push(action.movement);
-            return modifiedMovements;
-        case "REMOVE_MOVEMENT":
-            modifiedMovements = state.filter(function(movement){
+        case ADD_MOVEMENT:
+            action.movement.id = state.length + 2;
+            return [...state, action.movement];
+        case REMOVE_MOVEMENT:
+            return state.filter(function(movement){
                 return !(movement.id === action.id);
             });
-            return modifiedMovements;
+        case RECEIVE_MOVEMENTS:
+            return action.movements;
         default:
             return state;
     }

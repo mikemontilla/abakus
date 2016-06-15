@@ -8,6 +8,8 @@ import NewMovementForm from '../containers/NewMovementForm'
 const AccountsManager = React.createClass({
 
 	PropTypes: {
+		initialize: PropTypes.func.isRequired,
+		message: PropTypes.string.isRequired,
 		movements: PropTypes.arrayOf(PropTypes.shape({
 			id: PropTypes.number.isRequired,
 			date: PropTypes.instanceOf(Date).isRequired,
@@ -16,6 +18,10 @@ const AccountsManager = React.createClass({
 			type: PropTypes.oneOf(['income','outcome']).isRequired,
 			comment: PropTypes.string.isRequired
 		})).isRequired
+	},
+
+	componentDidMount: function(){
+		this.props.initialize();
 	},
 
 	computeBalance: function(){
@@ -32,16 +38,16 @@ const AccountsManager = React.createClass({
 	},
 
 	render: function(){
+		const {message, movements} = this.props;
 		const balance = this.computeBalance();
-		const movementsFlag = !!this.props.movements.length;
-		let message = "";
-		if(!movementsFlag)
-			message = "There is no movements registered";
+		const messageFlag = !(message === "");
+		const movementsFlag = !!movements.length;
+
 		return (
 			<div className="accountManager">
 				<h1>Morion</h1>
-				{!movementsFlag && <h3 id="managerMessage">{message}</h3>}
-				{movementsFlag && <MovementsList movements={this.props.movements} />}
+				{messageFlag && <h3 id="managerMessage">{message}</h3>}
+				{movementsFlag && <MovementsList movements={movements} />}
 				{movementsFlag && <BalanceDisplay incomes={balance.incomes} outcomes={balance.outcomes} />}
 				<NewMovementForm  />
 			</div>
