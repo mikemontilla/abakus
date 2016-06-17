@@ -80,9 +80,9 @@ const NewMovementForm = React.createClass({
 		return (
 			<form className="newMovementForm" onSubmit={this.handleSubmit}>
 				<input type="text" placeholder="Description" value={this.state.description} onChange={this.handleDescriptionChange} />
-				<label for="incomeOpt">Income</label>
+				<label htmlFor="incomeOpt">Income</label>
 				<input type="radio" value="income" id="incomeOpt" checked={this.isIncome()} onChange={this.handleTypeChange} />
-				<label for="outcomeOpt">Outcome</label>
+				<label htmlFor="outcomeOpt">Outcome</label>
 				<input type="radio" value="outcome" id="outcomeOpt" checked={this.isOutcome()} onChange={this.handleTypeChange} />
 				<input type="number" placeholder="Amount" value={this.getValueInputText()} onChange={this.handleAmountChange} />
 				<input type="text" placeholder="Comment" value={this.state.comment} onChange={this.handleCommentChange} />
