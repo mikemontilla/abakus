@@ -44,7 +44,7 @@ abakus.set("ip", process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1");
 abakus.use("/", _express2.default.static(_path2.default.join(__dirname, "../public")));
 abakus.use(_bodyParser2.default.json());
 abakus.use(_bodyParser2.default.urlencoded({ extended: true }));
-abakus.set("views", "../views");
+abakus.set("views", _path2.default.join(__dirname, "/../views"));
 abakus.set("view engine", "pug");
 
 var removeMovement = function removeMovement(movements, removeId) {
