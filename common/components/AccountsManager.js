@@ -8,7 +8,6 @@ import NewMovementForm from '../containers/NewMovementForm'
 const AccountsManager = React.createClass({
 
 	PropTypes: {
-		initialize: PropTypes.func.isRequired,
 		message: PropTypes.string.isRequired,
 		movements: PropTypes.arrayOf(PropTypes.shape({
 			id: PropTypes.number.isRequired,
@@ -18,10 +17,6 @@ const AccountsManager = React.createClass({
 			type: PropTypes.oneOf(['income','outcome']).isRequired,
 			comment: PropTypes.string.isRequired
 		})).isRequired
-	},
-
-	componentDidMount: function(){
-		this.props.initialize();
 	},
 
 	computeBalance: function(){

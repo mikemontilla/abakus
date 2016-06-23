@@ -19,12 +19,6 @@ const mapStateToProps = function(state) {
     return {message, movements};
 };
 
-const mapDispatchToProps = function(dispatch) {
-    return {initialize: function(){
-        dispatch(fetchMovements());
-    }};
-};
-
-const AccountsManager = connect(mapStateToProps, mapDispatchToProps)(AccountsManagerComponent);
+const AccountsManager = connect(mapStateToProps)(AccountsManagerComponent);
 
 export default AccountsManager

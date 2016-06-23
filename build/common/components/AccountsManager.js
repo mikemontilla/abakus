@@ -27,7 +27,6 @@ var AccountsManager = _react2.default.createClass({
 
 
 	PropTypes: {
-		initialize: _react.PropTypes.func.isRequired,
 		message: _react.PropTypes.string.isRequired,
 		movements: _react.PropTypes.arrayOf(_react.PropTypes.shape({
 			id: _react.PropTypes.number.isRequired,
@@ -37,10 +36,6 @@ var AccountsManager = _react2.default.createClass({
 			type: _react.PropTypes.oneOf(['income', 'outcome']).isRequired,
 			comment: _react.PropTypes.string.isRequired
 		})).isRequired
-	},
-
-	componentDidMount: function componentDidMount() {
-		this.props.initialize();
 	},
 
 	computeBalance: function computeBalance() {

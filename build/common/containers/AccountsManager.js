@@ -32,13 +32,7 @@ var mapStateToProps = function mapStateToProps(state) {
     return { message: message, movements: movements };
 };
 
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-    return { initialize: function initialize() {
-            dispatch((0, _actions.fetchMovements)());
-        } };
-};
-
-var AccountsManager = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_AccountsManager2.default);
+var AccountsManager = (0, _reactRedux.connect)(mapStateToProps)(_AccountsManager2.default);
 
 exports.default = AccountsManager;
 //# sourceMappingURL=AccountsManager.js.map
