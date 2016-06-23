@@ -5,14 +5,14 @@ import express from 'express'
 import React from 'react'
 import {Provider} from 'react-redux'
 import {renderToString} from 'react-dom/server'
-import configureStore from '../public/js/store/'
-import AccountsManager from '../public/js/containers/AccountsManager'
+import configureStore from './common/store/'
+import AccountsManager from './common/containers/AccountsManager'
 import jade from 'jade'
 
 const abakus = express();
 
-const USERS_FILE = path.join(__dirname, "users.json");
-const MOVEMENTS_FILE = path.join(__dirname, "movements.json");
+const USERS_FILE = path.join(__dirname, "/../persistence/users.json");
+const MOVEMENTS_FILE = path.join(__dirname, "/../persistence/movements.json");
 
 abakus.set("port", (process.env.OPENSHIFT_NODEJS_PORT || 8080));
 abakus.set("ip", (process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1"))
