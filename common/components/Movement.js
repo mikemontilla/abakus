@@ -9,7 +9,8 @@ const Movement = React.createClass({
 		movement: PropTypes.object.isRequired
 	},
 
-	handleDestroyClick: function(){
+	handleDestroyClick: function(e){
+		e.preventDefault();
 		this.props.onDestroyClick(this.props.movement.id);
 	},
 
@@ -22,7 +23,7 @@ const Movement = React.createClass({
 				<td>{this.props.movement.type}</td>
 				<td><span>{this.props.movement.amount}</span></td>
 				<td>{this.props.movement.comment}</td>
-				<div className="destroy" onClick={this.handleDestroyClick}></div>
+				<td className="destroy" onClick={this.handleDestroyClick}><a href="#"></a></td>
 			</tr>
 		);
 	}

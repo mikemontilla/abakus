@@ -23,7 +23,8 @@ var Movement = _react2.default.createClass({
 		movement: _react.PropTypes.object.isRequired
 	},
 
-	handleDestroyClick: function handleDestroyClick() {
+	handleDestroyClick: function handleDestroyClick(e) {
+		e.preventDefault();
 		this.props.onDestroyClick(this.props.movement.id);
 	},
 
@@ -61,7 +62,11 @@ var Movement = _react2.default.createClass({
 				null,
 				this.props.movement.comment
 			),
-			_react2.default.createElement('div', { className: 'destroy', onClick: this.handleDestroyClick })
+			_react2.default.createElement(
+				'td',
+				{ className: 'destroy', onClick: this.handleDestroyClick },
+				_react2.default.createElement('a', { href: '#' })
+			)
 		);
 	}
 });

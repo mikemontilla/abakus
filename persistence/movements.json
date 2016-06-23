@@ -1,18 +1,1 @@
-[
-    {
-        "id": 1,
-        "date": "23/6/2016",
-        "description": "Compra de cerditos",
-        "type": "outcome",
-        "amount": 55900,
-        "comment": "Salida"
-    },
-    {
-        "id": 2,
-        "date": "23/6/2016",
-        "description": "Scrappings",
-        "type": "income",
-        "amount": 125800,
-        "comment": "Se le debe a Nicolás"
-    }
-]
+[]
