@@ -32,10 +32,6 @@ var _AccountsManager = require('./common/containers/AccountsManager');
 
 var _AccountsManager2 = _interopRequireDefault(_AccountsManager);
 
-var _jade = require('jade');
-
-var _jade2 = _interopRequireDefault(_jade);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var abakus = (0, _express2.default)();
@@ -48,8 +44,8 @@ abakus.set("ip", process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1");
 abakus.use("/", _express2.default.static(_path2.default.join(__dirname, "../public")));
 abakus.use(_bodyParser2.default.json());
 abakus.use(_bodyParser2.default.urlencoded({ extended: true }));
-abakus.engine("jade", _jade2.default.__express);
-abakus.set("view engine", "jade");
+abakus.set("views", "../views");
+abakus.set("view engine", "pug");
 
 var removeMovement = function removeMovement(movements, removeId) {
 	if (!movements.length) return;

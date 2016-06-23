@@ -7,7 +7,6 @@ import {Provider} from 'react-redux'
 import {renderToString} from 'react-dom/server'
 import configureStore from './common/store/'
 import AccountsManager from './common/containers/AccountsManager'
-import jade from 'jade'
 
 const abakus = express();
 
@@ -19,8 +18,8 @@ abakus.set("ip", (process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1"))
 abakus.use("/", express.static(path.join(__dirname, "../public")));
 abakus.use(bodyParser.json());
 abakus.use(bodyParser.urlencoded({extended:true}));
-abakus.engine("jade", jade.__express);
-abakus.set("view engine", "jade");
+abakus.set("views", path.join(__dirname, "/../views"));
+abakus.set("view engine", "pug");
 
 const removeMovement = function(movements, removeId){
 	if(!movements.length)
