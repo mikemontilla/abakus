@@ -2,10 +2,13 @@ const path = require("path");
 
 module.exports = {
     devtool: "inline-source-map",
-    entry: path.join(__dirname + "/public/js/index.js"),
+    entry: {
+        movements: path.join(__dirname + "/public/js/movements.js"),
+        business: path.join(__dirname + "/public/js/business.js")
+    },
     output: {
         path: path.join(__dirname, "/public/js"),
-        filename: "bundle.js"
+        filename: "[name].bundle.js"
     },
     module: {
         loaders: [{

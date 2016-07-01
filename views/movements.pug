@@ -1,0 +1,11 @@
+doctype
+html
+    head
+        title Abakus*.*.*
+        link(rel="stylesheet", type="text/css", href="/css/base.css")
+    body
+        div(id="root")!= html
+        script(type="text/javascript").
+            window.__INITIAL_STATE_ = !{finalState}
+            window.__BUSINESS_NAME_ = !{businessName}
+        script(type="text/javascript" src="/js/movements.bundle.js")

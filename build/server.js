@@ -16,6 +16,10 @@ var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
 
+var _cookieParser = require('cookie-parser');
+
+var _cookieParser2 = _interopRequireDefault(_cookieParser);
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -24,49 +28,46 @@ var _reactRedux = require('react-redux');
 
 var _server = require('react-dom/server');
 
-var _store = require('./common/store/');
+var _movements = require('./persistence/movements');
+
+var _business = require('./persistence/business');
+
+var _store = require('./common/business/store/');
 
 var _store2 = _interopRequireDefault(_store);
 
-var _AccountsManager = require('./common/containers/AccountsManager');
+var _store3 = require('./common/movements/store/');
+
+var _store4 = _interopRequireDefault(_store3);
+
+var _AccountsManager = require('./common/movements/containers/AccountsManager');
 
 var _AccountsManager2 = _interopRequireDefault(_AccountsManager);
+
+var _BusinessManager = require('./common/business/containers/BusinessManager');
+
+var _BusinessManager2 = _interopRequireDefault(_BusinessManager);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var abakus = (0, _express2.default)();
 
-var USERS_FILE = _path2.default.join(__dirname, "/../persistence/users.json");
-var MOVEMENTS_FILE = _path2.default.join(__dirname, "/../persistence/movements.json");
-
 abakus.set("port", process.env.OPENSHIFT_NODEJS_PORT || 8080);
 abakus.set("ip", process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1");
+abakus.use((0, _cookieParser2.default)());
 abakus.use("/", _express2.default.static(_path2.default.join(__dirname, "../public")));
 abakus.use(_bodyParser2.default.json());
 abakus.use(_bodyParser2.default.urlencoded({ extended: true }));
 abakus.set("views", _path2.default.join(__dirname, "/../views"));
 abakus.set("view engine", "pug");
 
-var removeMovement = function removeMovement(movements, removeId) {
-	if (!movements.length) return;
-	removeId--;
-	movements.splice(removeId, 1);
-	while (removeId < movements.length) {
-		movements[removeId].id--;
-		removeId++;
-	}
-};
+abakus.get("/business", function (req, res) {
 
-var getMovements = function getMovements(callback) {
-	_fs2.default.readFile(MOVEMENTS_FILE, function (error, data) {
-		if (error) return callback(error);
-		var movements = JSON.parse(data);
-		return callback(null, movements);
-	});
-};
+	//Reseting cookie
+	res.clearCookie("business_id");
+	res.clearCookie("business_name");
 
-abakus.get("/", function (req, res) {
-	getMovements(function (error, movements) {
+	(0, _business.getBusiness)(function (error, business) {
 		if (error) {
 			console.error(error);
 			process.exit(1);
@@ -74,84 +75,125 @@ abakus.get("/", function (req, res) {
 		//Computes initial state
 		var initialState = {
 			error: null,
-			fetching: false,
-			movements: movements
+			business: business
 		};
 		var store = (0, _store2.default)(initialState);
 		var html = (0, _server.renderToString)(_react2.default.createElement(
 			_reactRedux.Provider,
 			{ store: store },
-			_react2.default.createElement(_AccountsManager2.default, null)
+			_react2.default.createElement(_BusinessManager2.default, null)
 		));
 		var finalState = JSON.stringify(store.getState());
-		res.render("index", { html: html, finalState: finalState });
+		res.render("business", { html: html, finalState: finalState });
 	});
 });
 
-abakus.get("/api/movements", function (req, res) {
-	_fs2.default.readFile(MOVEMENTS_FILE, function (error, data) {
+abakus.get("/movements/:id", function (req, res) {
+
+	var businessId = parseInt(req.params.id);
+	(0, _business.getSingleBusiness)(businessId, function (error, business) {
 		if (error) {
 			console.error(error);
 			process.exit(1);
 		}
+		//Cookie set to identify the business in other requests
+		res.cookie("business_id", business.id);
 
-		var movements = JSON.parse(data);
-		res.json(movements);
+		(0, _movements.getMovements)(business.id, function (error, movements) {
+			if (error) {
+				console.error(error);
+				process.exit(1);
+			}
+			//Computes initial state
+			var initialState = {
+				error: null,
+				fetching: false,
+				movements: movements
+			};
+			var store = (0, _store4.default)(initialState);
+			var html = (0, _server.renderToString)(_react2.default.createElement(
+				_reactRedux.Provider,
+				{ store: store },
+				_react2.default.createElement(_AccountsManager2.default, { businessName: business.name })
+			));
+			var finalState = JSON.stringify(store.getState());
+			var businessName = JSON.stringify(business.name);
+			res.render("movements", { html: html, finalState: finalState, businessName: businessName });
+		});
 	});
 });
 
 abakus.post("/api/movements", function (req, res) {
 
-	_fs2.default.readFile(MOVEMENTS_FILE, function (error, data) {
+	var businessId = parseInt(req.cookies.business_id);
+	var newMovement = {
+		businessId: businessId,
+		date: req.body.date,
+		description: req.body.description,
+		type: req.body.type,
+		amount: parseInt(req.body.amount),
+		comment: req.body.comment
+	};
 
+	(0, _movements.saveMovement)(newMovement, function (error, newMovementId) {
 		if (error) {
 			console.error(error);
 			process.exit(1);
 		}
+		if (newMovementId) {
+			(0, _movements.getMovements)(businessId, function (error, movements) {
+				if (error) {
+					console.error(error);
+					process.exit(1);
+				}
+				res.json(movements);
+			});
+		}
+	});
+});
 
-		var movements = JSON.parse(data);
+abakus.post("/api/business", function (req, res) {
 
-		var newMovement = {
-			id: movements.length + 1,
-			date: req.body.date,
-			description: req.body.description,
-			type: req.body.type,
-			amount: parseInt(req.body.amount),
-			comment: req.body.comment
-		};
+	var newBusiness = {
+		date: req.body.date,
+		name: req.body.name
+	};
 
-		movements.push(newMovement);
-
-		_fs2.default.writeFile(MOVEMENTS_FILE, JSON.stringify(movements, null, 4), function (error) {
-			if (error) {
-				console.error(error);
-				process.exit(1);
-			}
-			res.json(movements);
-		});
+	(0, _business.saveBusiness)(newBusiness, function (error, savedFlag) {
+		if (error) {
+			console.error(error);
+			process.exit(1);
+		}
+		if (savedFlag) {
+			(0, _business.getBusiness)(function (error, business) {
+				if (error) {
+					console.error(error);
+					process.exit(1);
+				}
+				res.json(business);
+			});
+		}
 	});
 });
 
 abakus.post("/api/movements/remove", function (req, res) {
 
-	_fs2.default.readFile(MOVEMENTS_FILE, function (error, data) {
-
+	var businessId = parseInt(req.cookies.business_id);
+	var id = parseInt(req.body.id);
+	(0, _movements.deleteMovement)(id, function (error, deletedFlag) {
 		if (error) {
 			console.error(error);
 			process.exit(1);
 		}
-
-		var movements = JSON.parse(data);
-		var id = parseInt(req.body.id);
-		removeMovement(movements, id);
-
-		_fs2.default.writeFile(MOVEMENTS_FILE, JSON.stringify(movements, null, 4), function (error) {
-			if (error) {
-				console.error(error);
-				process.exit(1);
-			}
-			res.json(movements);
-		});
+		if (deletedFlag) {
+			(0, _movements.getMovements)(businessId, function (error, movements) {
+				if (error) {
+					console.error(error);
+					process.exit(1);
+				}
+				res.json(movements);
+			});
+		}
 	});
 });
 
