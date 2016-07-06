@@ -108,8 +108,13 @@ abakus.get("/movements/:id", function (req, res) {
 			var initialState = {
 				error: null,
 				fetching: false,
-				movements: movements
+				movements: {
+					past: [],
+					present: movements,
+					future: []
+				}
 			};
+
 			var store = (0, _store4.default)(initialState);
 			var html = (0, _server.renderToString)(_react2.default.createElement(
 				_reactRedux.Provider,

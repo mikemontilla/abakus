@@ -1,4 +1,5 @@
 import {ADD_MOVEMENT, REMOVE_MOVEMENT, RECEIVE_MOVEMENTS} from '../actions'
+import undoable, {distinctState} from 'redux-undo'
 
 //Handles the addition and deletion of movements
 const movementsReducer = function(state = [], action) {
@@ -16,4 +17,6 @@ const movementsReducer = function(state = [], action) {
     }
 };
 
-export default movementsReducer
+const undoableMovements = undoable(movementsReducer, {filter: distinctState()});
+
+export default undoableMovements

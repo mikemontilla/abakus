@@ -2,7 +2,8 @@ import {connect} from 'react-redux'
 import AccountsManagerComponent from '../components/AccountsManager'
 
 const getMessage = function(state) {
-    const {fetching, error, movements} = state;
+    const {fetching, error} = state;
+    const movements = state.movements.present;
     if(fetching)
         return "Loading movements...";
     if(error)
@@ -13,7 +14,7 @@ const getMessage = function(state) {
 };
 
 const mapStateToProps = function(state) {
-    const {movements} = state;
+    const movements = state.movements.present;
     const message = getMessage(state);
     return {message, movements};
 };

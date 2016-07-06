@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -8,9 +8,11 @@ exports.fetchMovements = fetchMovements;
 exports.saveMovement = saveMovement;
 exports.deleteMovement = deleteMovement;
 
-var _axios = require("axios");
+var _axios = require('axios');
 
 var _axios2 = _interopRequireDefault(_axios);
+
+var _reduxUndo = require('redux-undo');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -78,6 +80,7 @@ function saveMovement(movement) {
         }).then(function (response) {
             dispatch(receiveMovements(response.data));
         }).catch(function (error) {
+            dispatch(_reduxUndo.ActionCreators.undo());
             dispatch(receiveError(error));
         });
     };
@@ -94,6 +97,7 @@ function deleteMovement(id) {
         }).then(function (response) {
             dispatch(receiveMovements(response.data));
         }).catch(function (error) {
+            dispatch(_reduxUndo.ActionCreators.undo());
             dispatch(receiveError(error));
         });
     };

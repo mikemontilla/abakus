@@ -71,8 +71,13 @@ abakus.get("/movements/:id", function(req, res){
 			const initialState = {
 				error: null,
 				fetching: false,
-				movements
+				movements: {
+					past: [],
+					present: movements,
+					future: []
+				}
 			};
+
 			const store = configureMovementsStore(initialState);
 			const html = renderToString(
 				<Provider store={store}>

@@ -15,8 +15,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var getMessage = function getMessage(state) {
     var fetching = state.fetching;
     var error = state.error;
-    var movements = state.movements;
 
+    var movements = state.movements.present;
     if (fetching) return "Loading movements...";
     if (error) return state.error.toString();
     if (!movements.length) return "There is no movements registered";
@@ -24,8 +24,7 @@ var getMessage = function getMessage(state) {
 };
 
 var mapStateToProps = function mapStateToProps(state) {
-    var movements = state.movements;
-
+    var movements = state.movements.present;
     var message = getMessage(state);
     return { message: message, movements: movements };
 };

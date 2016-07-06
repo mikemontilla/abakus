@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {ActionCreators as UndoActionCreators} from 'redux-undo'
 
 export const ADD_MOVEMENT = "ADD_MOVEMENT";
 export const REMOVE_MOVEMENT = "REMOVE_MOVEMENT";
@@ -68,6 +69,7 @@ export function saveMovement(movement) {
             dispatch(receiveMovements(response.data));
         })
         .catch(function(error){
+            dispatch(UndoActionCreators.undo());
             dispatch(receiveError(error));
         });
     };
@@ -86,6 +88,7 @@ export function deleteMovement(id) {
             dispatch(receiveMovements(response.data));
         })
         .catch(function(error){
+            dispatch(UndoActionCreators.undo());
             dispatch(receiveError(error));
         });
     }
