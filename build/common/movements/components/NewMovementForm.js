@@ -36,7 +36,7 @@ var NewMovementForm = _react2.default.createClass({
 		d.date = this.formatDate(new Date());
 		d.type = this.state.type;
 
-		if (!d.description || !d.amount || !d.comment) return;
+		if (!d.description || !d.amount) return;
 
 		this.props.onMovementSubmit(d);
 
@@ -90,7 +90,7 @@ var NewMovementForm = _react2.default.createClass({
 		return _react2.default.createElement(
 			'form',
 			{ className: 'newMovementForm', onSubmit: this.handleSubmit },
-			_react2.default.createElement('input', { type: 'text', placeholder: 'Description', value: this.state.description, onChange: this.handleDescriptionChange }),
+			_react2.default.createElement('input', { type: 'text', placeholder: 'Description', value: this.state.description, onChange: this.handleDescriptionChange, required: true }),
 			_react2.default.createElement(
 				'label',
 				{ htmlFor: 'incomeOpt' },
@@ -103,7 +103,7 @@ var NewMovementForm = _react2.default.createClass({
 				'Outcome'
 			),
 			_react2.default.createElement('input', { type: 'radio', value: 'outcome', id: 'outcomeOpt', checked: this.isOutcome(), onChange: this.handleTypeChange }),
-			_react2.default.createElement('input', { type: 'number', placeholder: 'Amount', value: this.getValueInputText(), onChange: this.handleAmountChange }),
+			_react2.default.createElement('input', { type: 'number', placeholder: 'Amount', value: this.getValueInputText(), onChange: this.handleAmountChange, required: true }),
 			_react2.default.createElement('input', { type: 'text', placeholder: 'Comment', value: this.state.comment, onChange: this.handleCommentChange }),
 			_react2.default.createElement('input', { type: 'submit', value: 'Add new movement' })
 		);

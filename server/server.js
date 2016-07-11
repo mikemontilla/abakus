@@ -24,7 +24,7 @@ abakus.use(bodyParser.urlencoded({extended:true}));
 abakus.set("views", path.join(__dirname, "/../views"));
 abakus.set("view engine", "pug");
 
-abakus.get("/business", function(req, res){
+abakus.get("/", function(req, res){
 
 	//Reseting cookie
 	res.clearCookie("business_id");

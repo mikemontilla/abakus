@@ -25,7 +25,7 @@ const NewMovementForm = React.createClass({
 		d.date = this.formatDate(new Date());
 		d.type = this.state.type;
 
-		if(!d.description || !d.amount || !d.comment)
+		if(!d.description || !d.amount)
 			return;
 
 		this.props.onMovementSubmit(d);
@@ -79,12 +79,12 @@ const NewMovementForm = React.createClass({
 	render: function(){
 		return (
 			<form className="newMovementForm" onSubmit={this.handleSubmit}>
-				<input type="text" placeholder="Description" value={this.state.description} onChange={this.handleDescriptionChange} />
+				<input type="text" placeholder="Description" value={this.state.description} onChange={this.handleDescriptionChange} required />
 				<label htmlFor="incomeOpt">Income</label>
 				<input type="radio" value="income" id="incomeOpt" checked={this.isIncome()} onChange={this.handleTypeChange} />
 				<label htmlFor="outcomeOpt">Outcome</label>
 				<input type="radio" value="outcome" id="outcomeOpt" checked={this.isOutcome()} onChange={this.handleTypeChange} />
-				<input type="number" placeholder="Amount" value={this.getValueInputText()} onChange={this.handleAmountChange} />
+				<input type="number" placeholder="Amount" value={this.getValueInputText()} onChange={this.handleAmountChange} required />
 				<input type="text" placeholder="Comment" value={this.state.comment} onChange={this.handleCommentChange} />
 				<input type="submit" value="Add new movement"/>
 			</form>
